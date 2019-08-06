@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Destination</title>
+  </head>
+  <body>
+    {% for linked_item in linked_items %}
+    <a
+      csrf_token_dest="{{ build_new_csrf_token() }}"
+      source_domain="source-domain.com"
+      click_data_src="{{ linked_item.click_data_src }}"
+      report_data_dest="{{ linked_item.report_data_dest }}"
+      >
+    <input type="button" value='Event for {{linked_item.name}}!'/></a><BR>
+    {% endfor %}
+  </body>
+</html>

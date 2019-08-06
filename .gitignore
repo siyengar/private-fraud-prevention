@@ -1,0 +1,5 @@
+venv*
+*.pyc
+.mypy_cache
+node_modules
+client/dist/temp

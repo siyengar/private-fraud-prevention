@@ -1,0 +1,27 @@
+{
+  "name": "private fraud prevention",
+  "description": "blind sign redirect for anon reports",
+  "version": "0.1",
+  "manifest_version": 2,
+  "background": {
+	"scripts": [
+    "background.js"
+  ]
+  },
+  "browser_action": {},
+  "permissions": [
+    "webRequest",
+    "http://localhost:5000/*",
+    "webRequestBlocking",
+	  "storage",
+    "activeTab",
+    "pageCapture"
+  ],
+  "content_scripts": [
+    {
+      "run_at": "document_idle",
+      "matches": ["http://localhost:5000/*"],
+      "js": ["contentScript.js"]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+mkdir -p chrome
+cp chrome-dev/manifest.json chrome/manifest.json
+browserify chrome-dev/background.js -o chrome/background.js
+browserify chrome-dev/contentScript.js -o chrome/contentScript.js

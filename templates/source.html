@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Source</title>
+  </head>
+  <body>
+    {% for linked_item in ads %}
+    <a href=" {{url_for('destination_domain.destination_domain_linked_items', linked_item_id=linked_item._id)}} "
+       csrf_token_src="{{ build_new_csrf_token() }}"
+       click_data_src="{{ linked_item.click_data_src }}"
+       >
+      <input type="button" value='Link for {{linked_item.name}}'/></a>
+    <BR>
+    {% endfor %}
+    <a href="{{ url_for('source_domain.source_domain_index') }}">
+      <input type="button" value='source-domain.com!'/></a>
+  </body>
+</html>
