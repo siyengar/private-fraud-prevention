@@ -1,4 +1,4 @@
-# Fraud Resistant, Privacy Preserving Technology Using Blind Signatures
+# Fraud Resistant, Privacy Preserving Measurement Using Blind Signatures
 
 ### Installation Instructions
 
