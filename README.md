@@ -117,7 +117,7 @@ We welcome feedback about this proposal. Question our assumptions, look for expl
 
 There are many related problems in this space, and we are open to collaboration in order to solve them together with the academic community.
 
-# Comparsion with Privacy Pass
+# Comparison with Privacy Pass
 
 [Privacy pass](https://privacypass.github.io/) is a similar system that uses a VOPRF based blind signature to protect privacy. The goals of both systems are similar, but there are some differences which are notable. We believe both our systems could benefit from sharing ideas:
 
