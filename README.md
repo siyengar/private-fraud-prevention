@@ -1,4 +1,4 @@
-# Fraud Resistant, Privacy Preserving Measurement Using Blind Signatures
+# Fraud Resistant, Privacy Preserving Reporting Using Blind Signatures
 
 ### Installation Instructions
 
@@ -109,7 +109,7 @@ Again, we can use partially blind signatures here. We can request a partially bl
 
 An unscrupulous touchpoint might attempt to abuse the blind signature endpoint by generating a unique public / private keypair per user. To block this, we recommend that when the user-agent makes a request for the touchpoint’s public key, it does so with an anonymous request. No cookies, no authentication, etc.
 
-A nefarious touchpoint might also try to rotate their public / private key very frequently, to gain additional information about the time at which the interaction occurred. Key rotation should be very infrequent (i.e. only after a security breach). As such, we propose using something like [Google’s key-transparency technology](https://github.com/google/keytransparency) to look for bad actors who are making too many rotations. We could also design a service specifically for the purpose of checking the number of times keys have been used globally, which are simpler than key transparency.
+A nefarious touchpoint might also try to rotate their public / private key very frequently, to gain additional information about the time at which the interaction occurred. Key rotation should be very infrequent (i.e. only after a security breach). As such, we propose using something like [Google’s key-transparency technology](https://github.com/google/keytransparency) to look for bad actors who are making too many rotations. Client's would only accept a key that signed by a public log which makes sure that the public keys are auditable. We could also design a service specifically for the purpose of checking the number of times keys have been used globally, which are simpler than key transparency, which is the scope of future work.
 
 # Request for comments
 
