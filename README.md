@@ -116,3 +116,11 @@ A nefarious touchpoint might also try to rotate their public / private key very 
 We welcome feedback about this proposal. Question our assumptions, look for exploit vectors we haven’t considered. We would love your help fighting fraud while preserving privacy.
 
 There are many related problems in this space, and we are open to collaboration in order to solve them together with the academic community.
+
+# Comparsion with Privacy Pass
+
+[Privacy pass](https://privacypass.github.io/) is a similar system that uses a VOPRF based blind signature to protect privacy. The goals of both systems are similar, but there are some differences which are notable. We believe both our systems could benefit from sharing ideas:
+
+* Privacy pass is designed with private validation of signatures in mind. This works well when the token issuer and validator are the same entity, however when they are different entities, public validation of signatures are easier to deploy. For example with public validation, a validator can download and cache the public key for a long time and be resilient to the failure of the validation service. Some of the use cases we have for fraud detection involve multiple touchpoints validation each others signatures.
+* Privacy pass works with a public key known ahead of time. This proposal proposes a method for the server to be able to rotate keys as well as bind public meta-data to keys with a partially blind signature scheme.
+* While our demo uses RSA based blind signatures, a publicly validatable VOPRF as used in privacy pass could be used readily in this proposal. A VOPRF mechanism is currently being standardized by the IETF [draft](https://datatracker.ietf.org/doc/draft-irtf-cfrg-voprf/).
