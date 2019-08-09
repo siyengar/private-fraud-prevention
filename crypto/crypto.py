@@ -1,5 +1,6 @@
 import functools
 from typing import Any
+import hashlib
 
 from Crypto.PublicKey import RSA
 
@@ -29,6 +30,14 @@ def import_public_key(
         public_key: bytes
 ) -> Any:
     return RSA.importKey(public_key)
+
+
+# TODO: implement Full domain hash, for now hash
+# should be fine as it breaks the malleability
+def hash_message(message: bytes,  output_len: Any) -> bytes:
+    hash_alg = hashlib.sha256() 
+    hash_alg.update(message)
+    return hash_alg.digest()
 
 
 def sign_message(

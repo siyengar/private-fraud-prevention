@@ -20,6 +20,7 @@ from crypto.crypto import (
     validate_signature,
     blind_message,
     unblind_message,
+    hash_message,
 )
 
 
@@ -122,6 +123,7 @@ def source_domain_report():
     click_data_src = request.form['click_data_src']
     report_data_dest = request.form['report_data_dest']
     nonce = unhexlify(request.form['nonce'])
+    hashed_nonce = hash_message(nonce, 256)
     signature_src = unhexlify(request.form['signature_src'])
     signature_dest = unhexlify(request.form['signature_dest'])
 
@@ -134,12 +136,12 @@ def source_domain_report():
 
     signature_src_valid = validate_signature(
         source_domain_public_key,
-        nonce,
+        hashed_nonce,
         signature_src
     )
     signature_dest_valid = validate_signature(
         destination_domain_public_key,
-        nonce,
+        hashed_nonce,
         signature_dest
     )
     valid = str(signature_src_valid and signature_dest_valid)
@@ -199,18 +201,20 @@ def hello_blinding_service():
 def blinding_service_blind_message():
     public_key = unhexlify(request.form['public_key'])
     message = unhexlify(request.form['message'])
+    hashed = hash_message(message, 256)
     blinding_factor = unhexlify(request.form['blinding_factor'])
-    return hexlify(blind_message(public_key, message, blinding_factor))
+    return hexlify(blind_message(public_key, hashed, blinding_factor))
 
 
 @blinding_service.route('/.well-known/unblind', methods=['POST'])
 def blinding_service_unblind_message():
     public_key = unhexlify(request.form['public_key'])
     message = unhexlify(request.form['message'])
+    hash_msg = hash_message(message, 256)
     blinded_message = unhexlify(request.form['blind_message'])
     blinding_factor = unhexlify(request.form['blinding_factor'])
     unblinded = unblind_message(public_key, blinded_message, blinding_factor)
-    valid = validate_signature(public_key, message, unblinded)
+    valid = validate_signature(public_key, hash_msg, unblinded)
     if not valid:
         raise Exception('unblinded signature is invalid')
     return hexlify(unblinded)

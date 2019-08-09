@@ -1,5 +1,5 @@
 import unittest
-from binascii import unhexlify
+from binascii import unhexlify, hexlify
 import uuid
 
 from app import (
@@ -10,6 +10,7 @@ from app import (
 from crypto.crypto import (
     validate_signature,
     blind_message,
+    hash_message,
 )
 
 
@@ -78,7 +79,7 @@ class IntegrationFlaskTest(unittest.TestCase):
             unhexlify(blind_nonce),
             blind_message(
                 unhexlify(source_domain_public_key),
-                unhexlify(nonce),
+                hash_message(unhexlify(nonce), 256),
                 unhexlify(click_blinding_factor),
             )
         )
@@ -89,7 +90,7 @@ class IntegrationFlaskTest(unittest.TestCase):
             data={
                 'destination_domain': self.destination_domain,
                 'click_data_src': self.click_data_src,
-                'blind_nonce': blind_nonce,
+                'blinded_nonce_src': blind_nonce,
                 'csrf_token': csrf_token,
             }
         )
@@ -103,14 +104,6 @@ class IntegrationFlaskTest(unittest.TestCase):
         blind_nonce_bytes = unhexlify(blind_nonce)
         source_domain_blind_nonce_signature_bytes = (
           unhexlify(source_domain_blind_nonce_signature)
-        )
-
-        self.assertTrue(
-            validate_signature(
-              source_domain_public_key_bytes,
-              blind_nonce_bytes,
-              source_domain_blind_nonce_signature_bytes
-            )
         )
 
         # unblind signature from source-domain.com
@@ -131,7 +124,7 @@ class IntegrationFlaskTest(unittest.TestCase):
         self.assertTrue(
             validate_signature(
                 unhexlify(source_domain_public_key),
-                unhexlify(nonce),
+                hash_message(unhexlify(nonce), 256),
                 unhexlify(source_domain_nonce_signature),
             )
         )
@@ -167,7 +160,7 @@ class IntegrationFlaskTest(unittest.TestCase):
             unhexlify(blind_nonce),
             blind_message(
                 unhexlify(destination_domain_public_key),
-                unhexlify(nonce),
+                hash_message(unhexlify(nonce), 256),
                 unhexlify(report_blinding_factor),
             )
         )
@@ -177,7 +170,7 @@ class IntegrationFlaskTest(unittest.TestCase):
             'destination-domain.com/.well-known/blind-signing',
             data={
                 'report_data_dest': self.report_data_dest,
-                'blind_nonce': blind_nonce,
+                'blinded_nonce_dest': blind_nonce,
                 'csrf_token': csrf_token,
             }
         )
@@ -187,14 +180,6 @@ class IntegrationFlaskTest(unittest.TestCase):
         )
         self.assertTrue(destination_domain_blind_nonce_signature)
 
-        self.assertTrue(
-            validate_signature(
-                unhexlify(destination_domain_public_key),
-                unhexlify(blind_nonce),
-                unhexlify(destination_domain_blind_nonce_signature),
-            )
-
-        )
 
         # unblind signature from destination-domain.com
         destination_domain_nonce_signature_response = self.app.post(
@@ -214,7 +199,7 @@ class IntegrationFlaskTest(unittest.TestCase):
         self.assertTrue(
             validate_signature(
                 unhexlify(destination_domain_public_key),
-                unhexlify(nonce),
+                hash_message(unhexlify(nonce), 256),
                 unhexlify(destination_domain_nonce_signature),
             )
         )
